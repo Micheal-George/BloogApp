@@ -1,0 +1,55 @@
+package com.masai.Service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.masai.Exception.CommentNotFound;
+import com.masai.Model.Comment;
+import com.masai.Repository.CommentDAO;
+
+@Service
+public class CommentServiceIMPL implements CommentService {
+
+	@Autowired
+	CommentDAO cdao;
+
+	@Override
+	public List<Comment> getAllCommentsByPostID(Long Pid) throws CommentNotFound {
+		
+			List<Comment> list=cdao.findByPostId(Pid);
+			 if(list.size()!=0)
+			 {
+				return list; 
+			 }
+		throw new CommentNotFound("No comments belong to the postId :"+Pid);
+	}
+
+	@Override
+	public Comment addComment(Comment comment, Long Pid) throws CommentNotFound {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Comment getCommentByCid(Long Pid, Long Cid) throws CommentNotFound {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Comment updateCommentByCid(Long Pid, Long Cid, Comment comment) throws CommentNotFound {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean deleteComment(Long Pid, Long Cid) throws CommentNotFound {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	
+
+}

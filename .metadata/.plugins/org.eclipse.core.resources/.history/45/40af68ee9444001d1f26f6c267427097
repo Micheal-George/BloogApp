@@ -1,0 +1,59 @@
+package com.masai.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.masai.Exception.PostNotFound;
+import com.masai.Model.Post;
+import com.masai.Repository.PostDAO;
+
+@Service
+public class PostServiceIMPL implements PostService{
+	
+@Autowired
+PostDAO pdao;
+
+	
+	
+
+	@Override
+	public Post getPostById(Integer id) throws PostNotFound {
+		Optional<Post> opt=pdao.findById(id);
+		if(opt.isPresent())
+			return opt.get();
+		
+	 throw new PostNotFound("Post not present with the id: "+id);
+	}
+
+	@Override
+	public Post addPost(Post post) throws PostNotFound {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Post updatePost(Post post) throws PostNotFound {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean deletePost(Integer id) throws PostNotFound {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<Post> getAllPost() throws PostNotFound {
+		List<Post> list=pdao.findAll();
+		if(list.size()!=0)
+			return list;
+		throw new PostNotFound("Post List is Empty");
+	}
+
+	
+
+}

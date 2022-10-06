@@ -1,0 +1,47 @@
+package com.masai.Service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.masai.Model.User;
+import com.masai.Model.UserDTO;
+import com.masai.Repository.UserDAO;
+import com.masai.Repository.UserdtoDAO;
+import com.masai.Repository.currentUserDAO;
+
+@Service
+public class UserServiceIMPL implements UserService{
+
+	@Autowired
+	UserDAO udao;
+	
+	@Autowired
+	UserdtoDAO uddao;
+	
+	@Autowired
+	currentUserDAO cdao;
+	
+	@Override
+	public String UserSignUp(User user) {
+		User exist=udao.getBymobilenumber(user.getMobileNo());
+		if(exist!=null)
+			return "User Already Registered";
+		
+		udao.save(user);
+		return "User Registered Successully";
+		
+	}
+
+	@Override
+	public String UserLogIn(UserDTO userdto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String UserLogOut(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

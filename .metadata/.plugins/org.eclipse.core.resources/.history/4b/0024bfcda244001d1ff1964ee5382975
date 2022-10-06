@@ -1,0 +1,22 @@
+package com.masai.Service;
+
+import java.util.List;
+
+import com.masai.Model.Comment;
+
+public interface CommentService {
+	
+	public List<Comment> getAllCommentsByPostID(Long Pid);
+	
+	public Comment addComment(Comment comment,Long Pid);
+	
+	public Comment getCommentByCid(Long Pid,Long Cid);
+	
+	public Comment updateCommentByCid(Long Pid,Long Cid,Comment comment);
+	
+	public boolean deleteComment(Long Pid,Long Cid);
+	
+	
+	
+
+}

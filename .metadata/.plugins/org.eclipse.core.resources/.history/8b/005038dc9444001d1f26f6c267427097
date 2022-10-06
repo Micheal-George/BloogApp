@@ -1,0 +1,39 @@
+package com.masai.Service;
+
+import java.util.List;
+
+import com.masai.Model.Post;
+
+public class PostServiceIMPL implements PostService{
+
+	@Override
+	public List<Post> getAllPost() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Post getPostById(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Post addPost(Post post) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Post updatePost(Post post) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean deletePost(Integer id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

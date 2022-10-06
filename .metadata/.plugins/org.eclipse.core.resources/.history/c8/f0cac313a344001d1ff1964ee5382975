@@ -1,0 +1,47 @@
+package com.masai.Service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.masai.Model.Comment;
+import com.masai.Repository.CommentDAO;
+
+@Service
+public class CommentServiceIMPL implements CommentService {
+
+	@Autowired
+	CommentDAO cdao;
+	
+	@Override
+	public List<Comment> getAllCommentsByPostID(Long Pid) {
+		List<Comment> list=cdao.findByPostId(Pid);
+		return null;
+	}
+
+	@Override
+	public Comment addComment(Comment comment, Long Pid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Comment getCommentByCid(Long Pid, Long Cid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Comment updateCommentByCid(Long Pid, Long Cid, Comment comment) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean deleteComment(Long Pid, Long Cid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

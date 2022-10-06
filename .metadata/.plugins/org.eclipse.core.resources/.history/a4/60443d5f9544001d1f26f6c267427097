@@ -1,0 +1,21 @@
+package com.masai.Service;
+
+import java.util.List;
+
+import com.masai.Exception.PostNotFound;
+import com.masai.Model.Post;
+
+public interface PostService {
+	
+	public List<Post> getAllPost() throws PostNotFound;
+	
+	public Post getPostById(Long id) throws PostNotFound;
+	
+	public Post addPost(Post post) throws PostNotFound;
+	
+	public Post updatePost(Post post) throws PostNotFound;
+	
+	public boolean deletePost(Integer id) throws PostNotFound;
+	
+
+}
