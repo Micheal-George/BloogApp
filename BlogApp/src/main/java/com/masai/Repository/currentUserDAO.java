@@ -8,4 +8,8 @@ public interface currentUserDAO extends JpaRepository<CurrentUserSession, Intege
 
 	CurrentUserSession getByUserId(Integer id);
 
+	
+
+	
+
 }

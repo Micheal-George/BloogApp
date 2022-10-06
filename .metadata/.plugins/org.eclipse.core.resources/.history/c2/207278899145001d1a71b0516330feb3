@@ -1,0 +1,67 @@
+package com.masai.Service;
+
+import java.time.LocalDateTime;
+import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.masai.Model.CurrentUserSession;
+import com.masai.Model.User;
+import com.masai.Model.UserDTO;
+import com.masai.Repository.UserDAO;
+import com.masai.Repository.UserdtoDAO;
+import com.masai.Repository.currentUserDAO;
+
+import net.bytebuddy.utility.RandomString;
+
+@Service
+public class UserServiceIMPL implements UserService{
+
+	@Autowired
+	UserDAO udao;
+	
+	
+	
+	@Autowired
+	currentUserDAO cdao;
+	
+	@Override
+	public String UserSignUp(User user) {
+		User exist=udao.getByMobileNo(user.getMobileNo());
+		if(exist!=null)
+			return "User Already Registered";
+		
+		udao.save(user);
+		return "User Registered Successully";
+		
+	}
+
+	@Override
+	public String UserLogIn(UserDTO userdto) {
+		User exist=udao.getByMobileNo(userdto.getMobileNo());
+		if(exist==null)
+			return "Not a Registered User";
+		CurrentUserSession cses=cdao.getByUserId(exist.getId());
+		if(cses!=null)
+			return "User already loged in";
+		if(exist.getPassword().equals(userdto.getPassword()))
+		{
+			String key = RandomString.make(6);
+			CurrentUserSession currentUserSession = new CurrentUserSession(exist.getId(), key, LocalDateTime.now());
+			cdao.save(currentUserSession);
+			return key;
+		}
+		else
+			return  "Incorrect Password";
+		
+		
+	}
+
+	@Override
+	public String UserLogOut(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

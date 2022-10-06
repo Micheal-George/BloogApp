@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.masai.Exception.PostNotFound;
@@ -23,7 +26,10 @@ PostDAO pdao;
 	public Post getPostById(Long id) throws PostNotFound {
 		Optional<Post> opt=pdao.findById(id);
 		if(opt.isPresent())
+		{
 			return opt.get();
+		}
+			
 		
 	 throw new PostNotFound("Post not present with the id: "+id);
 	}
@@ -63,10 +69,14 @@ PostDAO pdao;
 	}
 
 	@Override
-	public List<Post> getAllPost() throws PostNotFound {
+	public List<Post> getAllPost(int pageN,int pageS) throws PostNotFound {
 		List<Post> list=pdao.findAll();
 		if(list.size()!=0)
-			return list;
+		{
+			Pageable paging = PageRequest.of(pageN, pageS);
+	        Page<Post> pagedResult = pdao.findAll(paging);
+	        return pagedResult.toList();
+		}
 		throw new PostNotFound("Post List is Empty");
 	}
 

@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.masai.Exception.CommentNotFound;
@@ -23,12 +26,14 @@ public class CommentServiceIMPL implements CommentService {
 	PostDAO pdao;
 	
 	@Override
-	public List<Comment> getAllCommentsByPostID(Long Pid) throws CommentNotFound {
+	public List<Comment> getAllCommentsByPostID(Long Pid,int pageN,int pageS) throws CommentNotFound {
 		
 			List<Comment> list=cdao.findByPostId(Pid);
 			 if(list.size()!=0)
 			 {
-				return list; 
+				 Pageable paging = PageRequest.of(pageN, pageS);
+			        Page<Comment> pagedResult = cdao.findAll(paging);
+			        return pagedResult.toList();
 			 }
 		throw new CommentNotFound("No comments belong to the postId :"+Pid);
 	}
@@ -45,17 +50,25 @@ public class CommentServiceIMPL implements CommentService {
 	}
 
 	@Override
-	public Comment getCommentByCid(Long Pid, Long Cid) throws CommentNotFound {
+	public Comment getCommentByCid(Long Pid, Long Cid) throws CommentNotFound, PostNotFound {
+		Optional<Post> post=pdao.findById(Pid);
+		if(post.isPresent())
+		{
 		Optional<Comment> opt=cdao.findById(Cid);
 		if(opt.isPresent())
 		{
 			return opt.get();
 		}
 		throw new CommentNotFound("No comments belong to the postId :"+Cid);
+		}
+		throw new PostNotFound("No comments belong to the PostId :"+Pid);
 	}
 
 	@Override
-	public Comment updateCommentByCid(Long Pid, Long Cid, Comment comment) throws CommentNotFound {
+	public Comment updateCommentByCid(Long Pid, Long Cid, Comment comment) throws CommentNotFound, PostNotFound {
+		Optional<Post> post=pdao.findById(Pid);
+		if(post.isPresent())
+		{
 		Optional<Comment> opt=cdao.findById(Cid);
 		if(opt.isPresent())
 		{  Comment exist=opt.get();
@@ -68,23 +81,25 @@ public class CommentServiceIMPL implements CommentService {
 			return cdao.save(exist);
 		}
 		throw new CommentNotFound("No comments belong to the postId :"+Cid);
+		}
+		throw new PostNotFound("No comments belong to the PostId :"+Pid);
 	}
 
 	@Override
-	public boolean deleteComment(Long Pid, Long Cid) throws CommentNotFound {
-		Optional<Comment> opt=cdao.findById(Cid);
-		
-		if(opt.isPresent())
-		{  List<Comment> list=cdao.findByPostId(Pid);
-		for(Comment c:list)
+	public boolean deleteComment(Long Pid, Long Cid) throws CommentNotFound, PostNotFound {
+		Optional<Post> post=pdao.findById(Pid);
+		if(post.isPresent())
 		{
-			if(c.getId()==Cid)
-			{	cdao.delete(c);
-			return true;}
-		}
+		Optional<Comment> opt=cdao.findById(Cid);
+		if(opt.isPresent())
+		{  cdao.deleteById(Cid);
+			return true;
+		
 			
 		}
-		throw new CommentNotFound("No comments belong to the postId :"+Cid);
+		throw new CommentNotFound("No comments belong to the CommentId :"+Cid);
+		}
+		throw new PostNotFound("No comments belong to the PostId :"+Pid);
 	}
 	
 	

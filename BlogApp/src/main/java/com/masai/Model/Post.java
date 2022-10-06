@@ -34,7 +34,7 @@ public class Post {
 	@NotNull(message = "Content is mandatory")
   private String content;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "post", fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "post", fetch = FetchType.LAZY)
 	private List<Comment> comment=new ArrayList<>();
 	
 }

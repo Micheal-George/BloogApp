@@ -49,7 +49,8 @@ public class UserServiceIMPL implements UserService{
 		{
 			String key = RandomString.make(6);
 			CurrentUserSession currentUserSession = new CurrentUserSession(exist.getId(), key, LocalDateTime.now());
-			return key;
+			cdao.save(currentUserSession);
+			return "Key: "+ key +"   ID :"+exist.getId();
 		}
 		else
 			return  "Incorrect Password";
@@ -59,8 +60,13 @@ public class UserServiceIMPL implements UserService{
 
 	@Override
 	public String UserLogOut(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		CurrentUserSession opt=cdao.getByUserId(id);
+		if(opt!=null)
+		{
+			cdao.delete(opt);
+			return "logged out";
+		}
+		return "Not logged in";
 	}
 
 }

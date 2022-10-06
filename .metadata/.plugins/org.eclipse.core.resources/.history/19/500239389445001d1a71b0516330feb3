@@ -1,0 +1,13 @@
+package com.masai.Service;
+
+import com.masai.Model.User;
+import com.masai.Model.UserDTO;
+
+public interface UserService {
+
+	public String UserSignUp(User user);
+	
+	public String UserLogIn(UserDTO userdto);
+	
+	public String UserLogOut(Integer id);
+}

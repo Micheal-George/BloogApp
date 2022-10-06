@@ -34,9 +34,9 @@ public class Controller {
 	@Autowired
 	CommentService cservice;
 	
-	@GetMapping
-	public ResponseEntity<List<Post>> getAllPost() throws PostNotFound {
-		return new ResponseEntity<List<Post>>(pservice.getAllPost(),	HttpStatus.OK);
+	@GetMapping("/{pageN}/{pageS}")
+	public ResponseEntity<List<Post>> getAllPost(@PathVariable int pageN, @PathVariable int pageS) throws PostNotFound {
+		return new ResponseEntity<List<Post>>(pservice.getAllPost(pageN,pageS),	HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
@@ -45,7 +45,7 @@ public class Controller {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Post> getPostById(@RequestBody Post post) throws PostNotFound {
+	public ResponseEntity<Post> addPost(@RequestBody Post post) throws PostNotFound {
 		return new ResponseEntity<Post>(pservice.addPost(post),	HttpStatus.CREATED);}
 	
 	@PutMapping("/{id}")
@@ -57,14 +57,14 @@ public class Controller {
 		return new ResponseEntity<Boolean>(pservice.deletePost(id),	HttpStatus.OK);}
 
 	
-	@GetMapping("/{id}/comments")
-	public ResponseEntity<List<Comment>> getAllComments(@PathVariable("id") long id) throws CommentNotFound {
-		return new ResponseEntity<List<Comment>>(cservice.getAllCommentsByPostID(id),	HttpStatus.OK);
+	@GetMapping("/{id}/comments/{pageN}/{pageS}")
+	public ResponseEntity<List<Comment>> getAllComments(@PathVariable long id,@PathVariable int pageN, @PathVariable int pageS) throws CommentNotFound {
+		return new ResponseEntity<List<Comment>>(cservice.getAllCommentsByPostID(id,pageN,pageS),	HttpStatus.OK);
 	}
 	
 
 	@GetMapping("/{pid}/comments/{cid}")
-	public ResponseEntity<Comment> getComment(@PathVariable long pid,@PathVariable long cid) throws CommentNotFound {
+	public ResponseEntity<Comment> getComment(@PathVariable long pid,@PathVariable long cid) throws CommentNotFound, PostNotFound {
 		return new ResponseEntity<Comment>(cservice.getCommentByCid(pid, cid),	HttpStatus.OK);
 	}
 	
@@ -74,12 +74,12 @@ public class Controller {
 	}
 	
 	@PutMapping("/{pid}/comments/{cid}")
-	public ResponseEntity<Comment> updateComment(@PathVariable long pid,@PathVariable long cid,@RequestBody Comment comment) throws CommentNotFound {
+	public ResponseEntity<Comment> updateComment(@PathVariable long pid,@PathVariable long cid,@RequestBody Comment comment) throws CommentNotFound, PostNotFound {
 		return new ResponseEntity<Comment>(cservice.updateCommentByCid(pid, cid, comment),	HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{pid}/comments/{cid}")
-	public ResponseEntity<Boolean> deleteComment(@PathVariable long pid,@PathVariable long cid) throws CommentNotFound {
+	public ResponseEntity<Boolean> deleteComment(@PathVariable long pid,@PathVariable long cid) throws CommentNotFound, PostNotFound {
 		return new ResponseEntity<Boolean>(cservice.deleteComment(pid, cid),	HttpStatus.OK);
 	}
 	
