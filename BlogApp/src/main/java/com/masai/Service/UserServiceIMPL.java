@@ -60,6 +60,7 @@ public class UserServiceIMPL implements UserService{
 
 	@Override
 	public String UserLogOut(Integer id) {
+		
 		CurrentUserSession opt=cdao.getByUserId(id);
 		if(opt!=null)
 		{
